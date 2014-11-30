@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>25AF9D06-2ADC-4FD2-B5A8-4F76D9B8DC49</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CrossPlatform_iOS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BC8B48B2BC9B512E3AF388A51352DA85DE837947</key>
+		<string>https://github.com/medelnant/CrossPlatform_Repo.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CrossPlatform_iOS/CrossPlatform_iOS.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BC8B48B2BC9B512E3AF388A51352DA85DE837947</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/medelnant/CrossPlatform_Repo.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BC8B48B2BC9B512E3AF388A51352DA85DE837947</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BC8B48B2BC9B512E3AF388A51352DA85DE837947</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CrossPlatform_Repo</string>
+		</dict>
+	</array>
+</dict>
+</plist>
