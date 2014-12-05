@@ -3,18 +3,16 @@ package com.michaeledelnant.crossplatform_android;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 
 public class RegPathContainer extends Activity
      implements LoginFragment.Callbacks,
-                CreateAccountFragment.Callbacks{
+                CreateAccountFragment.Callbacks,
+                ForgotPasswordDialogFragment.Callbacks{
 
     private static final String TAG = "RegPathContainerActivity";
 
@@ -24,11 +22,8 @@ public class RegPathContainer extends Activity
         setContentView(R.layout.activity_regpathcontainer);
 
         ParseUser user = ParseUser.getCurrentUser();
-        Toast.makeText(this, "Welcome back " + user.get("firstname") + " | " + user.getObjectId(), Toast.LENGTH_LONG).show();
-
-        //If user exists in db and hasn't logged out previously...
-        //This is based on "id". An Anonymous user will not have an "id" until properties are sent and saved to parse.
-        if(user.getObjectId() != null) {
+        //If user obj exists due to not logging out previously (user obj persists through crashes or killing the app)
+        if(user != null) {
             //Direct them into the app
             Intent intent = new Intent(this, MainActivityContainer.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -52,7 +47,7 @@ public class RegPathContainer extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.global, menu);
         return true;
     }
 
@@ -64,9 +59,9 @@ public class RegPathContainer extends Activity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -100,6 +100,7 @@ public class CreateAccountFragment extends Fragment {
                                 } else {
                                     //Error
                                     Log.e(TAG, e.toString());
+                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         });

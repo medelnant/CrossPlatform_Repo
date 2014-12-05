@@ -1,7 +1,6 @@
 package com.michaeledelnant.crossplatform_android;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -53,6 +52,29 @@ public class LoginFragment extends Fragment {
         mLoginBtn = (Button) mRootView.findViewById(R.id.btnLogin);
         mCreateAccountBtn = (Button) mRootView.findViewById(R.id.btnCreateAccount);
 
+        //ForgotPassword Action
+        mForgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Instantiate customDialogFragment class
+                ForgotPasswordDialogFragment dialogFragment = new ForgotPasswordDialogFragment();
+
+                //Build bundle
+                Bundle b = new Bundle();
+                b.putString("title", "Forgot Password");
+                b.putString("message", "Please provide your email address for us to send an email reset link.");
+                //Pass unique type to handle desired actions for this unique instance
+                b.putInt("dialogType", 0);
+
+                //Attach bundle as arguments to fragment
+                dialogFragment.setArguments(b);
+
+                //Trigger display of dialogFragment
+                dialogFragment.show(getFragmentManager(), "forgotPassword");
+
+            }
+        });
+
         //Login Action
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,26 +87,32 @@ public class LoginFragment extends Fragment {
                 //Create New empty parseUser object
                 ParseUser user = new ParseUser();
 
-                //Login through parse passing username and password - expecting callback
-                user.logInInBackground(userName, password, new LogInCallback() {
-                    @Override
-                    public void done(ParseUser parseUser, ParseException e) {
+                if(!userName.equals("") || !password.equals("")) {
 
-                        if(e == null) {
-                            //On Success
-                            mContainmentActivity.onLoginSuccess();
-                            Toast.makeText(getActivity(), "Welcome back " + parseUser.get("firstname"), Toast.LENGTH_LONG).show();
-                        } else {
-                            //Error
-                            Log.e(TAG, e.toString());
+                    //Login through parse passing username and password - expecting callback
+                    user.logInInBackground(userName, password, new LogInCallback() {
+                        @Override
+                        public void done(ParseUser parseUser, ParseException e) {
+
+                            if(e == null) {
+                                //On Success
+                                mContainmentActivity.onLoginSuccess();
+                            } else {
+                                //Error
+                                Log.e(TAG, e.toString());
+                                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
+                    });
 
-                    }
-                });
+                } else {
+                    Toast.makeText(getActivity(), "Please enter your username and password.", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
 
+        //Create Account Action
         mCreateAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
