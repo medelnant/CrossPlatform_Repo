@@ -48,13 +48,37 @@
         NSLog(@"We're read to send to Parse");
         NSLog(@"%@", [NSString stringWithFormat:@"Username: %@ | Email Address: %@ | Firstname: %@ | Lastname: %@ | Password: %@", userNameText, emaillAddressText, firstnameText, lastnameText, passwordText]);
         
+        PFUser *newUser = [PFUser user];
+        newUser.username = userNameText;
+        newUser.password = passwordText;
+        newUser.email = emaillAddressText;
         
-        //Clear all fields
-        self.username.text = @"";
-        self.emailAddress.text = @"";
-        self.firstname.text = @"";
-        self.lastname.text = @"";
-        self.password.text = @"";
+        newUser[@"firstname"] = firstnameText;
+        newUser[@"lastname"] = lastnameText;
+        
+        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+
+                //Send user to logged in application state
+                [self performSegueWithIdentifier:@"accountCreated" sender:nil];
+                
+                //Clear all fields
+                self.username.text = @"";
+                self.emailAddress.text = @"";
+                self.firstname.text = @"";
+                self.lastname.text = @"";
+                self.password.text = @"";
+                
+            } else {
+                
+                //Build Alert with error messaging
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Logging In"
+                                                                    message:[error userInfo][@"error"]
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                //Display Alert
+                [alertView show];
+            }
+        }];
         
     }
     

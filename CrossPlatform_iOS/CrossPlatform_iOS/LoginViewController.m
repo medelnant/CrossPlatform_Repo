@@ -20,6 +20,12 @@
     //Set title
     self.title = @"Login";
     
+    //If user is logged in - reroute to logged in application state
+    PFUser * currentUser = [PFUser currentUser];
+    if (currentUser) {
+        [self performSegueWithIdentifier:@"loginSuccess" sender:nil];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
