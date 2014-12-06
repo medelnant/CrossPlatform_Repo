@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface CreateAccountViewController : UIViewController
+@interface CreateAccountViewController : UIViewController <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *username;
+@property (weak, nonatomic) IBOutlet UITextField *emailAddress;
+@property (weak, nonatomic) IBOutlet UITextField *firstname;
+@property (weak, nonatomic) IBOutlet UITextField *lastname;
+@property (weak, nonatomic) IBOutlet UITextField *password;
+
+- (IBAction)createAccount:(id)sender;
+
 
 @end

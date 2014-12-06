@@ -19,12 +19,18 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W8E-Zt-xGu">
                                 <rect key="frame" x="16" y="113" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="O2b-ZL-mNW"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EYj-L2-O5V">
                                 <rect key="frame" x="16" y="151" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="vur-RI-Ft6"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5F-NZ-Ema">
                                 <rect key="frame" x="123" y="189" width="126" height="30"/>
@@ -68,16 +74,44 @@
                     <connections>
                         <outlet property="password" destination="EYj-L2-O5V" id="Fs7-iS-0Tz"/>
                         <outlet property="username" destination="W8E-Zt-xGu" id="tYr-wE-CXo"/>
+                        <segue destination="vEu-wD-4cb" kind="show" identifier="loginSuccess" id="uJ2-eF-kUn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="827.5" y="433.5"/>
+            <point key="canvasLocation" x="-210.5" y="-654.5"/>
         </scene>
-        <!--Create Account View Controller-->
+        <!--Logged In View Controller-->
+        <scene sceneID="Bnv-Tv-zBr">
+            <objects>
+                <viewController id="vEu-wD-4cb" customClass="LoggedInViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VXF-Na-DFl"/>
+                        <viewControllerLayoutGuide type="bottom" id="43t-wC-fXn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HNe-iX-OKN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Logged In" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cub-uH-PUS">
+                                <rect key="frame" x="148" y="323" width="78" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Bs-FC-Zk5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="49.5" y="232.5"/>
+        </scene>
+        <!--Create Account-->
         <scene sceneID="vwC-xP-Gm8">
             <objects>
-                <viewController storyboardIdentifier="createAccountView" id="Pmd-lc-8Gx" customClass="CreateAccountViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="createAccountView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pmd-lc-8Gx" userLabel="Create Account" customClass="CreateAccountViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mUy-qq-glD"/>
                         <viewControllerLayoutGuide type="bottom" id="taC-SI-cyH"/>
@@ -89,42 +123,70 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q2K-Wh-2rn">
                                 <rect key="frame" x="16" y="113" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pmd-lc-8Gx" id="Wmn-23-cHs"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yim-4I-fah">
                                 <rect key="frame" x="16" y="151" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pmd-lc-8Gx" id="OBq-uF-IB8"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Firstname" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zvU-ZC-m6j">
                                 <rect key="frame" x="16" y="189" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pmd-lc-8Gx" id="4Iq-l6-Wby"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Lastname" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dbD-zo-E3s">
                                 <rect key="frame" x="16" y="227" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pmd-lc-8Gx" id="I7J-Ka-p7a"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A4i-0Z-d99">
                                 <rect key="frame" x="16" y="265" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Pmd-lc-8Gx" id="tUD-uT-06h"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ek3-B9-Ogt">
                                 <rect key="frame" x="134" y="303" width="107" height="30"/>
                                 <state key="normal" title="Create Account">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="createAccount:" destination="Pmd-lc-8Gx" eventType="touchUpInside" id="u63-yk-wl7"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="emailAddress" destination="yim-4I-fah" id="pFu-em-ymi"/>
+                        <outlet property="firstname" destination="zvU-ZC-m6j" id="BZy-tl-iRL"/>
+                        <outlet property="lastname" destination="dbD-zo-E3s" id="FnN-ZP-PXA"/>
+                        <outlet property="password" destination="A4i-0Z-d99" id="Hi3-Aj-XUP"/>
+                        <outlet property="username" destination="q2K-Wh-2rn" id="UTm-Y5-TnT"/>
+                        <segue destination="vEu-wD-4cb" kind="show" identifier="accountCreated" id="KEe-DA-Vfl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TMC-3R-mBx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340.5" y="433.5"/>
+            <point key="canvasLocation" x="302.5" y="-654.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="G96-QA-MQt">
@@ -141,7 +203,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQG-6a-nwa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="300.5" y="433.5"/>
+            <point key="canvasLocation" x="-737.5" y="-654.5"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="uJ2-eF-kUn"/>
+    </inferredMetricsTieBreakers>
 </document>
