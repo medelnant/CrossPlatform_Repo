@@ -163,6 +163,7 @@ public class DataListFragment extends ListFragment {
     public void refreshDataItems() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DataItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {

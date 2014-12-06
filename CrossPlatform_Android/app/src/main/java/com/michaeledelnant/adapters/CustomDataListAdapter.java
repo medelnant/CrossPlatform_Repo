@@ -2,12 +2,14 @@ package com.michaeledelnant.adapters;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +69,8 @@ public class CustomDataListAdapter extends BaseAdapter {
 
         TextView dataItemTitle = (TextView) listRowView.findViewById(R.id.dataTitle);
         TextView dataItemQuantity = (TextView) listRowView.findViewById(R.id.dataQuantity);
-        Button dataDelete = (Button) listRowView.findViewById(R.id.deleteItem);
+        ImageButton dataDelete = (ImageButton) listRowView.findViewById(R.id.deleteItem);
+        dataDelete.setColorFilter(Color.rgb(209, 35, 50));
 
         dataDelete.setOnClickListener(new View.OnClickListener() {
             @Override

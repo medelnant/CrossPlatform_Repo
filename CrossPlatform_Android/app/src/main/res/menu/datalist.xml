@@ -5,6 +5,6 @@
         android:title="Add Item"
         android:orderInCategory="10"
         app:showAsAction="always"
-        android:icon="@drawable/ic_launcher"/>
+        android:icon="@drawable/ic_action_new"/>
 
 </menu>
