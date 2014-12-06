@@ -10,7 +10,6 @@
 		53970C081A32AB12001E989E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C041A32AB12001E989E /* Bolts.framework */; };
 		53970C091A32AB12001E989E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C051A32AB12001E989E /* Parse.framework */; };
 		53970C0A1A32AB12001E989E /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C061A32AB12001E989E /* ParseFacebookUtils.framework */; };
-		53970C0B1A32AB12001E989E /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C071A32AB12001E989E /* ParseUI.framework */; };
 		53970C0E1A32AB53001E989E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C0D1A32AB53001E989E /* CoreLocation.framework */; };
 		53970C101A32AB5F001E989E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C0F1A32AB5F001E989E /* AudioToolbox.framework */; };
 		53970C121A32AB67001E989E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C111A32AB67001E989E /* CFNetwork.framework */; };
@@ -22,7 +21,9 @@
 		53970C1E1A32ABA8001E989E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C1D1A32ABA8001E989E /* StoreKit.framework */; };
 		53970C201A32ABB2001E989E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C1F1A32ABB2001E989E /* SystemConfiguration.framework */; };
 		53970C261A32B688001E989E /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53970C251A32B688001E989E /* CreateAccountViewController.m */; };
-		53970C291A32CA72001E989E /* LoggedInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53970C281A32CA72001E989E /* LoggedInViewController.m */; };
+		53970C2C1A334D0E001E989E /* DataListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53970C2B1A334D0E001E989E /* DataListTableViewController.m */; };
+		53970C301A3351F1001E989E /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C071A32AB12001E989E /* ParseUI.framework */; };
+		53970C361A3378C9001E989E /* AddDataItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53970C351A3378C9001E989E /* AddDataItemViewController.m */; };
 		53D7293C1A240293004A9823 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D7293B1A240293004A9823 /* main.m */; };
 		53D7293F1A240293004A9823 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D7293E1A240293004A9823 /* AppDelegate.m */; };
 		53D729421A240293004A9823 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D729411A240293004A9823 /* LoginViewController.m */; };
@@ -59,8 +60,10 @@
 		53970C1F1A32ABB2001E989E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		53970C241A32B688001E989E /* CreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		53970C251A32B688001E989E /* CreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
-		53970C271A32CA72001E989E /* LoggedInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggedInViewController.h; sourceTree = "<group>"; };
-		53970C281A32CA72001E989E /* LoggedInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggedInViewController.m; sourceTree = "<group>"; };
+		53970C2A1A334D0E001E989E /* DataListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataListTableViewController.h; sourceTree = "<group>"; };
+		53970C2B1A334D0E001E989E /* DataListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataListTableViewController.m; sourceTree = "<group>"; };
+		53970C341A3378C9001E989E /* AddDataItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddDataItemViewController.h; sourceTree = "<group>"; };
+		53970C351A3378C9001E989E /* AddDataItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddDataItemViewController.m; sourceTree = "<group>"; };
 		53D729361A240293004A9823 /* CrossPlatform_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrossPlatform_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D7293A1A240293004A9823 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53D7293B1A240293004A9823 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -92,9 +95,9 @@
 				53970C121A32AB67001E989E /* CFNetwork.framework in Frameworks */,
 				53970C101A32AB5F001E989E /* AudioToolbox.framework in Frameworks */,
 				53970C091A32AB12001E989E /* Parse.framework in Frameworks */,
-				53970C081A32AB12001E989E /* Bolts.framework in Frameworks */,
-				53970C0B1A32AB12001E989E /* ParseUI.framework in Frameworks */,
+				53970C301A3351F1001E989E /* ParseUI.framework in Frameworks */,
 				53970C0A1A32AB12001E989E /* ParseFacebookUtils.framework in Frameworks */,
+				53970C081A32AB12001E989E /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,8 +160,10 @@
 				53D729411A240293004A9823 /* LoginViewController.m */,
 				53970C241A32B688001E989E /* CreateAccountViewController.h */,
 				53970C251A32B688001E989E /* CreateAccountViewController.m */,
-				53970C271A32CA72001E989E /* LoggedInViewController.h */,
-				53970C281A32CA72001E989E /* LoggedInViewController.m */,
+				53970C2A1A334D0E001E989E /* DataListTableViewController.h */,
+				53970C2B1A334D0E001E989E /* DataListTableViewController.m */,
+				53970C341A3378C9001E989E /* AddDataItemViewController.h */,
+				53970C351A3378C9001E989E /* AddDataItemViewController.m */,
 				53D729431A240293004A9823 /* Main.storyboard */,
 				53D729461A240293004A9823 /* Images.xcassets */,
 				53D729481A240293004A9823 /* LaunchScreen.xib */,
@@ -294,8 +299,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				53970C261A32B688001E989E /* CreateAccountViewController.m in Sources */,
+				53970C361A3378C9001E989E /* AddDataItemViewController.m in Sources */,
 				53D729421A240293004A9823 /* LoginViewController.m in Sources */,
-				53970C291A32CA72001E989E /* LoggedInViewController.m in Sources */,
+				53970C2C1A334D0E001E989E /* DataListTableViewController.m in Sources */,
 				53D7293F1A240293004A9823 /* AppDelegate.m in Sources */,
 				53D7293C1A240293004A9823 /* main.m in Sources */,
 			);
