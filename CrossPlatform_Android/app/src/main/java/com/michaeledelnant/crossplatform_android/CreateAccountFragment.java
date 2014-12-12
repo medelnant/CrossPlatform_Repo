@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.michaeledelnant.connection.CheckDataConnection;
 import com.michaeledelnant.utilities.Validation;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -30,6 +31,7 @@ public class CreateAccountFragment extends Fragment {
     protected EditText mLastnameField;
     protected EditText mPasswordField;
     protected Button mCreateAccountBtn;
+    protected Validation mValidationLib;
 
 
     public CreateAccountFragment() {
@@ -45,6 +47,8 @@ public class CreateAccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mValidationLib = new Validation();
 
         // Inflate the layout for this fragment
         mRootView =inflater.inflate(R.layout.fragment_create_account, container, false);
@@ -88,22 +92,28 @@ public class CreateAccountFragment extends Fragment {
                         newUser.put("lastname", lastName);
                         newUser.put("email", emailAddress);
 
-                        //Send newUser to parse for account creation
-                        newUser.signUpInBackground(new SignUpCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                //Handle Response from callback
-                                if(e == null) {
-                                    //Success
-                                    Toast.makeText(getActivity(), "Your Account has been created", Toast.LENGTH_LONG).show();
-                                    mContainmentActivity.onCreateAccountSuccess();
-                                } else {
-                                    //Error
-                                    Log.e(TAG, e.toString());
-                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        if(mValidationLib.isNetworkAvailable(getActivity())) {
+
+                            //Send newUser to parse for account creation
+                            newUser.signUpInBackground(new SignUpCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    //Handle Response from callback
+                                    if(e == null) {
+                                        //Success
+                                        Toast.makeText(getActivity(), "Your Account has been created", Toast.LENGTH_LONG).show();
+                                        mContainmentActivity.onCreateAccountSuccess();
+                                    } else {
+                                        //Error
+                                        Log.e(TAG, e.toString());
+                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+
+                        } else {
+                            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+                        }
 
                     } else {
                         //Alert user to enter properly formatted email

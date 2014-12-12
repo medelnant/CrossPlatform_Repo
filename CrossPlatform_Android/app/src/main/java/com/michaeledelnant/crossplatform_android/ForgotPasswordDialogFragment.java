@@ -26,6 +26,8 @@ public class ForgotPasswordDialogFragment extends DialogFragment {
     private static final String TAG = "CustomDialogFragment";
     protected View mInflatedView;
     protected int mDialogType;
+    protected Validation mValidationLib;
+
     private Callbacks mContainmentActivity;
 
 
@@ -35,6 +37,8 @@ public class ForgotPasswordDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        mValidationLib = new Validation();
 
         Bundle b = getArguments();
 
@@ -83,17 +87,22 @@ public class ForgotPasswordDialogFragment extends DialogFragment {
 
                     if(!emailAddress.equals("") && Validation.isValidEmail(emailAddress)) {
 
-                        ParseUser.requestPasswordResetInBackground(emailAddress, new RequestPasswordResetCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if(e == null) {
-                                    dismiss();
-                                    Toast.makeText(getActivity(), "An email has been sent to reset your password.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Log.e(TAG, e.toString());
+                        if(mValidationLib.isNetworkAvailable(getActivity())) {
+                            ParseUser.requestPasswordResetInBackground(emailAddress, new RequestPasswordResetCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if(e == null) {
+                                        dismiss();
+                                        Toast.makeText(getActivity(), "An email has been sent to reset your password.", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Log.e(TAG, e.toString());
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+                            //dismiss();
+                        }
 
                     } else {
                         Toast.makeText(getActivity(), "Please enter a valid email address", Toast.LENGTH_LONG).show();

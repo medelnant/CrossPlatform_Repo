@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.michaeledelnant.connection.CheckDataConnection;
+import com.michaeledelnant.utilities.Validation;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -28,6 +30,7 @@ public class LoginFragment extends Fragment {
     protected TextView mForgotPasswordBtn;
     protected Button mLoginBtn;
     protected Button mCreateAccountBtn;
+    protected Validation mValidationLib;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -42,6 +45,8 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mValidationLib = new Validation();
 
         mRootView = inflater.inflate(R.layout.fragment_login, container, false);
 
@@ -89,21 +94,28 @@ public class LoginFragment extends Fragment {
 
                 if(!userName.equals("") || !password.equals("")) {
 
-                    //Login through parse passing username and password - expecting callback
-                    user.logInInBackground(userName, password, new LogInCallback() {
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
+                    if(mValidationLib.isNetworkAvailable(getActivity())) {
+                        //Login through parse passing username and password - expecting callback
+                        user.logInInBackground(userName, password, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
 
-                            if(e == null) {
-                                //On Success
-                                mContainmentActivity.onLoginSuccess();
-                            } else {
-                                //Error
-                                Log.e(TAG, e.toString());
-                                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                if(e == null) {
+                                    //On Success
+                                    mContainmentActivity.onLoginSuccess();
+                                } else {
+                                    //Error
+                                    Log.e(TAG, e.toString());
+                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
+                        });
+
+                    } else {
+
+                        Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+
+                    }
 
                 } else {
                     Toast.makeText(getActivity(), "Please enter your username and password.", Toast.LENGTH_LONG).show();

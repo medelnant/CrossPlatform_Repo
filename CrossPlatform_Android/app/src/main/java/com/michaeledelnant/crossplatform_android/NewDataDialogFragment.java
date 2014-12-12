@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.michaeledelnant.connection.CheckDataConnection;
 import com.michaeledelnant.utilities.Validation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -30,6 +31,7 @@ public class NewDataDialogFragment extends DialogFragment {
     private static final String TAG = "CustomDialogFragment";
     protected View mInflatedView;
     protected ParseObject mDataObject;
+    protected Validation mValidationLib;
 
 
     private Callbacks mContainmentActivity;
@@ -42,6 +44,8 @@ public class NewDataDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        mValidationLib = new Validation();
 
         Bundle b = getArguments();
 
@@ -58,31 +62,37 @@ public class NewDataDialogFragment extends DialogFragment {
 
         //If in Edit Mode query obect based on objectID passed in bundle
         if(b.getString("title").equals("Edit Data Item")) {
-            // Assume ParseObject myPost was previously created.
-            ParseQuery<ParseObject> dataItemQuery = ParseQuery.getQuery("DataItem");
-            dataItemQuery.whereEqualTo("objectId", b.getString("objectID"));
 
-            dataItemQuery.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> parseObjects, ParseException e) {
-                    if(e == null) {
-                        for (ParseObject dataItem : parseObjects) {
-                            Log.i(TAG, dataItem.getString("title") + " | " + dataItem.getNumber("quantity"));
 
-                            //Set dataObject to be saved
-                            mDataObject = dataItem;
+            if(mValidationLib.isNetworkAvailable(getActivity())) {
+                // Assume ParseObject myPost was previously created.
+                ParseQuery<ParseObject> dataItemQuery = ParseQuery.getQuery("DataItem");
+                dataItemQuery.whereEqualTo("objectId", b.getString("objectID"));
 
-                            EditText dataTitle = (EditText) mInflatedView.findViewById(R.id.dataTitle);
-                            EditText dataQuantity = (EditText) mInflatedView.findViewById(R.id.dataQuantity);
+                dataItemQuery.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> parseObjects, ParseException e) {
+                        if(e == null) {
+                            for (ParseObject dataItem : parseObjects) {
+                                Log.i(TAG, dataItem.getString("title") + " | " + dataItem.getNumber("quantity"));
 
-                            dataTitle.setText(dataItem.getString("title"));
-                            dataQuantity.setText(String.valueOf(dataItem.getNumber("quantity")));
+                                //Set dataObject to be saved
+                                mDataObject = dataItem;
+
+                                EditText dataTitle = (EditText) mInflatedView.findViewById(R.id.dataTitle);
+                                EditText dataQuantity = (EditText) mInflatedView.findViewById(R.id.dataQuantity);
+
+                                dataTitle.setText(dataItem.getString("title"));
+                                dataQuantity.setText(String.valueOf(dataItem.getNumber("quantity")));
+                            }
+                        } else {
+                            Log.e(TAG, e.getMessage());
                         }
-                    } else {
-                        Log.e(TAG, e.getMessage());
                     }
-                }
-            });
+                });
+            } else {
+                Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+            }
         }
 
         //Send Action
@@ -142,18 +152,24 @@ public class NewDataDialogFragment extends DialogFragment {
                         mDataObject.put("title", titleString);
                         mDataObject.put("quantity", quantityInt);
                         mDataObject.put("user", ParseUser.getCurrentUser());
-                        mDataObject.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if(e == null) {
-                                    Toast.makeText(getActivity(), "Data has been saved", Toast.LENGTH_LONG).show();
-                                    mContainmentActivity.notifyNewDataItemSaved();
-                                    getDialog().dismiss();
-                                } else {
-                                    Log.e(TAG, e.getMessage());
+
+                        if(mValidationLib.isNetworkAvailable(getActivity())) {
+                            mDataObject.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if(e == null) {
+                                        Toast.makeText(getActivity(), "Data has been saved", Toast.LENGTH_LONG).show();
+                                        mContainmentActivity.notifyNewDataItemSaved();
+                                        getDialog().dismiss();
+                                    } else {
+                                        Log.e(TAG, e.getMessage());
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+                        }
+
                     } else {
                         Toast.makeText(getActivity(), "Please provide a title and quantity for your item.", Toast.LENGTH_LONG).show();
                     }

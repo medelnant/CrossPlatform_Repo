@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.michaeledelnant.connection.CheckDataConnection;
 import com.parse.ParseUser;
 
 
@@ -35,6 +36,7 @@ public class MainActivityContainer extends ActionBarActivity
     private CharSequence mTitle;
 
     protected FragmentManager mFragMgr;
+    protected CheckDataConnection mCheckDataConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,7 @@ public class MainActivityContainer extends ActionBarActivity
 
     //Custom methods
     public void logOutUser() {
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.logOut();
         Toast.makeText(this, "You have successfully logged out", Toast.LENGTH_LONG).show();
@@ -143,6 +146,7 @@ public class MainActivityContainer extends ActionBarActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+
 
     }
 

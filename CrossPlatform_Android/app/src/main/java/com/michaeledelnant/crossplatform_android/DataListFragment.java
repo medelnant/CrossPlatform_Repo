@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 
 import com.michaeledelnant.adapters.CustomDataListAdapter;
+import com.michaeledelnant.connection.CheckDataConnection;
 import com.michaeledelnant.crossplatform_android.dummy.DummyContent;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -38,6 +39,7 @@ public class DataListFragment extends ListFragment {
     protected ListView mListView;
     protected ArrayList<ParseObject> mDataSource;
     protected CustomDataListAdapter mListAdapter;
+    protected CheckDataConnection mCheckDataConnection;
 
     public DataListFragment() {
     }
@@ -155,8 +157,17 @@ public class DataListFragment extends ListFragment {
     }
 
     public void getDataItems() {
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DataItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
+
+        if(mCheckDataConnection.check(getActivity())) {
+
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+        }
+
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
