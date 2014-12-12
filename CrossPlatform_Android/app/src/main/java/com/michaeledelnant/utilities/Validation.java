@@ -10,6 +10,17 @@ public class Validation {
         return target != null && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
+    public static boolean isValidStringLength(String checkString) {
+
+        boolean isValidLength = false;
+
+        if(checkString.length() >= 3) {
+            isValidLength = true;
+        }
+
+        return isValidLength;
+    }
+
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

@@ -84,40 +84,61 @@ public class CreateAccountFragment extends Fragment {
                     !lastName.equals("") &&
                     !password.equals("")) {
 
-                    //Check email address to verify it is correctly formatted
-                    if(Validation.isValidEmail(emailAddress)) {
-                        newUser.setUsername(userName);
-                        newUser.setPassword(password);
-                        newUser.put("firstname", firstName);
-                        newUser.put("lastname", lastName);
-                        newUser.put("email", emailAddress);
+                    if(mValidationLib.isValidStringLength(userName)) {
 
-                        if(mValidationLib.isNetworkAvailable(getActivity())) {
+                        if(mValidationLib.isValidStringLength(firstName)) {
 
-                            //Send newUser to parse for account creation
-                            newUser.signUpInBackground(new SignUpCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    //Handle Response from callback
-                                    if(e == null) {
-                                        //Success
-                                        Toast.makeText(getActivity(), "Your Account has been created", Toast.LENGTH_LONG).show();
-                                        mContainmentActivity.onCreateAccountSuccess();
+                            if(mValidationLib.isValidStringLength(lastName)) {
+
+                                //Check email address to verify it is correctly formatted
+                                if(Validation.isValidEmail(emailAddress)) {
+                                    newUser.setUsername(userName);
+                                    newUser.setPassword(password);
+                                    newUser.put("firstname", firstName);
+                                    newUser.put("lastname", lastName);
+                                    newUser.put("email", emailAddress);
+
+                                    if(mValidationLib.isNetworkAvailable(getActivity())) {
+
+                                        //Send newUser to parse for account creation
+                                        newUser.signUpInBackground(new SignUpCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                //Handle Response from callback
+                                                if(e == null) {
+                                                    //Success
+                                                    Toast.makeText(getActivity(), "Your Account has been created", Toast.LENGTH_LONG).show();
+                                                    mContainmentActivity.onCreateAccountSuccess();
+                                                } else {
+                                                    //Error
+                                                    Log.e(TAG, e.toString());
+                                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+
                                     } else {
-                                        //Error
-                                        Log.e(TAG, e.toString());
-                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
                                     }
+
+                                } else {
+                                    //Alert user to enter properly formatted email
+                                    Toast.makeText(getActivity(), "Please enter a valid email address", Toast.LENGTH_LONG).show();
                                 }
-                            });
+
+                            } else {
+                                //Alert user to enter properly formatted string
+                                Toast.makeText(getActivity(), "Please enter a valid last name longer than 3 characters", Toast.LENGTH_LONG).show();
+                            }
 
                         } else {
-                            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+                            //Alert user to enter properly formatted string
+                            Toast.makeText(getActivity(), "Please enter a valid first name longer than 3 characters", Toast.LENGTH_LONG).show();
                         }
 
                     } else {
-                        //Alert user to enter properly formatted email
-                        Toast.makeText(getActivity(), "Please enter a valid email address", Toast.LENGTH_LONG).show();
+                        //Alert user to enter properly formatted string
+                        Toast.makeText(getActivity(), "Please enter a valid username longer than 3 characters", Toast.LENGTH_LONG).show();
                     }
 
                 } else {

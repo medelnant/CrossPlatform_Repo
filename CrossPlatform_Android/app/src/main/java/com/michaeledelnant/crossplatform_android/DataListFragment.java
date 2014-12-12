@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.michaeledelnant.adapters.CustomDataListAdapter;
 import com.michaeledelnant.connection.CheckDataConnection;
 import com.michaeledelnant.crossplatform_android.dummy.DummyContent;
+import com.michaeledelnant.utilities.Validation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -29,6 +30,10 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class DataListFragment extends ListFragment {
 
@@ -39,7 +44,8 @@ public class DataListFragment extends ListFragment {
     protected ListView mListView;
     protected ArrayList<ParseObject> mDataSource;
     protected CustomDataListAdapter mListAdapter;
-    protected CheckDataConnection mCheckDataConnection;
+    protected Validation mCheckValidationLib;
+    protected Handler mHandler;
 
     public DataListFragment() {
     }
@@ -69,7 +75,18 @@ public class DataListFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getDataItems();
+        int delay = 1000; // delay for 1 sec.
+        int period = 20000; // repeat every 10 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                Log.i(TAG, "Refresh interval called every 20 seconds with a 1 second delay in bewtween");
+                getDataItems();
+            }
+        }, delay, period);
+
     }
 
     @Override
@@ -80,6 +97,8 @@ public class DataListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        mCheckValidationLib = new Validation();
 
         //Attach interface to this fragment
         mContainmentActivity = (Callbacks) activity;
@@ -161,59 +180,67 @@ public class DataListFragment extends ListFragment {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DataItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
 
-        if(mCheckDataConnection.check(getActivity())) {
+        if(mCheckValidationLib.isNetworkAvailable(getActivity())) {
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if(e==null) {
+
+                        //Define ArrayList struct
+                        mDataSource = new ArrayList<ParseObject>();
+
+                        //Loop through all results
+                        for(ParseObject dataItem : parseObjects) {
+                            mDataSource.add(dataItem);
+                        }
+
+                        bindListViewData(mDataSource);
+
+                    } else {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
 
         } else {
             Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
         }
-
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if(e==null) {
-
-                    //Define ArrayList struct
-                    mDataSource = new ArrayList<ParseObject>();
-
-                    //Loop through all results
-                    for(ParseObject dataItem : parseObjects) {
-                        mDataSource.add(dataItem);
-                    }
-
-                    bindListViewData(mDataSource);
-
-                } else {
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        });
     }
 
     public void refreshDataItems() {
+
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DataItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.orderByDescending("createdAt");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if(e==null) {
 
-                    //Define ArrayList struct
-                    mDataSource = new ArrayList<ParseObject>();
+        if(mCheckValidationLib.isNetworkAvailable(getActivity())) {
 
-                    //Loop through all results
-                    for(ParseObject dataItem : parseObjects) {
-                        mDataSource.add(dataItem);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if(e==null) {
+
+                        //Define ArrayList struct
+                        mDataSource = new ArrayList<ParseObject>();
+
+                        //Loop through all results
+                        for(ParseObject dataItem : parseObjects) {
+                            mDataSource.add(dataItem);
+                        }
+
+                        mListAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Log.e(TAG, e.getMessage());
                     }
-
-                    mListAdapter.notifyDataSetChanged();
-
-                } else {
-                    Log.e(TAG, e.getMessage());
                 }
-            }
-        });
+            });
+
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection Present. Please try again later.", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void bindListViewData(ArrayList<ParseObject> dataSource) {
