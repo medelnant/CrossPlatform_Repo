@@ -63,6 +63,11 @@ public class NewDataDialogFragment extends DialogFragment {
         //If in Edit Mode query obect based on objectID passed in bundle
         if(b.getString("title").equals("Edit Data Item")) {
 
+            final EditText dataTitle = (EditText) mInflatedView.findViewById(R.id.dataTitle);
+            final EditText dataQuantity = (EditText) mInflatedView.findViewById(R.id.dataQuantity);
+
+            dataTitle.setText(b.getString("objectTitle"));
+            dataQuantity.setText(b.getString("objectQuantity"));
 
             if(mValidationLib.isNetworkAvailable(getActivity())) {
                 // Assume ParseObject myPost was previously created.
@@ -78,12 +83,6 @@ public class NewDataDialogFragment extends DialogFragment {
 
                                 //Set dataObject to be saved
                                 mDataObject = dataItem;
-
-                                EditText dataTitle = (EditText) mInflatedView.findViewById(R.id.dataTitle);
-                                EditText dataQuantity = (EditText) mInflatedView.findViewById(R.id.dataQuantity);
-
-                                dataTitle.setText(dataItem.getString("title"));
-                                dataQuantity.setText(String.valueOf(dataItem.getNumber("quantity")));
                             }
                         } else {
                             Log.e(TAG, e.getMessage());

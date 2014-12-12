@@ -23,7 +23,14 @@ public class Validation {
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+        boolean activeConnection = false;
+
+        if(connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            activeConnection = (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+        }
+
+        return activeConnection;
     }
 }

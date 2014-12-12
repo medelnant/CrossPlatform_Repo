@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,9 +55,24 @@ public class DataListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mCheckValidationLib = new Validation();
+
         //Specify that this fragment has its own actionbar
         setHasOptionsMenu(true);
         setMenuVisibility(true);
+
+        int delay = 1000; // delay for 1 sec.
+        int period = 20000; // repeat every 10 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                Log.i(TAG, "Refresh interval called every 20 seconds with a 1 second delay in bewtween");
+                getDataItems();
+            }
+        }, delay, period);
+
 
 
     }
@@ -75,17 +91,6 @@ public class DataListFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        int delay = 1000; // delay for 1 sec.
-        int period = 20000; // repeat every 10 sec.
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask()
-        {
-            public void run()
-            {
-                Log.i(TAG, "Refresh interval called every 20 seconds with a 1 second delay in bewtween");
-                getDataItems();
-            }
-        }, delay, period);
 
     }
 
@@ -98,7 +103,7 @@ public class DataListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mCheckValidationLib = new Validation();
+
 
         //Attach interface to this fragment
         mContainmentActivity = (Callbacks) activity;
@@ -122,6 +127,8 @@ public class DataListFragment extends ListFragment {
         Bundle b = new Bundle();
         b.putString("title", "Edit Data Item");
         b.putString("objectID", dataItemObject.getObjectId());
+        b.putString("objectTitle", dataItemObject.getString("title"));
+        b.putString("objectQuantity", String.valueOf(dataItemObject.getNumber("quantity")));
 
         //b.putString("message", "Please provide your email address for us to send an email reset link.");
         //Pass unique type to handle desired actions for this unique instance
@@ -134,6 +141,17 @@ public class DataListFragment extends ListFragment {
         editDataItemFrag.show(getActivity().getFragmentManager(), "newDataItem");
 
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Log.i(TAG, "Item Selected!");
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -180,7 +198,7 @@ public class DataListFragment extends ListFragment {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DataItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
 
-        if(mCheckValidationLib.isNetworkAvailable(getActivity())) {
+        if(mCheckValidationLib.isNetworkAvailable(getActivity().getBaseContext())) {
 
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -248,6 +266,14 @@ public class DataListFragment extends ListFragment {
             mListAdapter = new CustomDataListAdapter(getActivity(), dataSource, getFragmentManager());
             setListAdapter(mListAdapter);
             getListView().setDivider(null);
+            registerForContextMenu(getListView());
+            getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.i(TAG, "LongItemClick!");
+                    return true;
+                }
+            });
 
         }
     }
