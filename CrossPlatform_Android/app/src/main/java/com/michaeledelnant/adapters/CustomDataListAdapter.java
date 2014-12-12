@@ -69,7 +69,7 @@ public class CustomDataListAdapter extends BaseAdapter {
 
         TextView dataItemTitle = (TextView) listRowView.findViewById(R.id.dataTitle);
         TextView dataItemQuantity = (TextView) listRowView.findViewById(R.id.dataQuantity);
-        ImageButton dataDelete = (ImageButton) listRowView.findViewById(R.id.deleteItem);
+/*        ImageButton dataDelete = (ImageButton) listRowView.findViewById(R.id.deleteItem);
         dataDelete.setColorFilter(Color.rgb(209, 35, 50));
 
         dataDelete.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class CustomDataListAdapter extends BaseAdapter {
                 });
 
             }
-        });
+        });*/
 
 
         String dataTitleString = dataItem.getString("title");

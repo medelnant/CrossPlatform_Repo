@@ -94,6 +94,25 @@ public class DataListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
+        ParseObject dataItemObject = mDataSource.get(position);
+        NewDataDialogFragment editDataItemFrag = new NewDataDialogFragment();
+
+        //Build bundle
+        Bundle b = new Bundle();
+        b.putString("title", "Edit Data Item");
+        b.putString("objectID", dataItemObject.getObjectId());
+
+        //b.putString("message", "Please provide your email address for us to send an email reset link.");
+        //Pass unique type to handle desired actions for this unique instance
+
+
+        //Attach bundle as arguments to fragment
+        editDataItemFrag.setArguments(b);
+
+        //Trigger display of dialogFragment
+        editDataItemFrag.show(getActivity().getFragmentManager(), "newDataItem");
+
+
     }
 
     @Override
@@ -191,13 +210,7 @@ public class DataListFragment extends ListFragment {
             mListAdapter = new CustomDataListAdapter(getActivity(), dataSource, getFragmentManager());
             setListAdapter(mListAdapter);
             getListView().setDivider(null);
-            getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ParseObject dataItemObject = mDataSource.get(position);
-                    Log.i(TAG, "Clicked " + dataItemObject.getString("title") + " | " + dataItemObject.getNumber("quantity"));
-                }
-            });
+
         }
     }
 
