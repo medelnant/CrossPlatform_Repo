@@ -71,10 +71,10 @@
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
     
     if (networkStatus == NotReachable) {
-        NSLog(@"There IS NO internet connection");
+        NSLog(@"No Connection/Network");
         isNetwork = false;
     } else {
-        NSLog(@"There IS internet connection");
+        NSLog(@"Connection/Network Exists");
         isNetwork = true;
     }
     
