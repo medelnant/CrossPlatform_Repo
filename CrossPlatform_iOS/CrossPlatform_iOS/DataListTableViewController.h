@@ -12,8 +12,12 @@
 
 @interface DataListTableViewController: PFQueryTableViewController
 
+@property NSTimer * reloadTimer;
 
 - (void) currentUserLogout;
 - (void) addDataItem;
+
+//Define empty PFObject to set once item is selected from table view
+@property PFObject * selectedObject;
 
 @end

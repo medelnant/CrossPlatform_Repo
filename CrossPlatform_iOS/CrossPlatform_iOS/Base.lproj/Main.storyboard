@@ -108,7 +108,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yim-4I-fah">
                                 <rect key="frame" x="16" y="151" width="340" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="Pmd-lc-8Gx" id="OBq-uF-IB8"/>
                                 </connections>
@@ -171,7 +171,7 @@
         <scene sceneID="2f3-WK-JuN">
             <objects>
                 <tableViewController id="qsE-uy-yYX" customClass="DataListTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wJX-Ut-z3a">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wJX-Ut-z3a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -238,7 +238,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Quantity (1, 2, 3, 4, 5...)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RDu-bZ-GeQ">
                                 <rect key="frame" x="16" y="180" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <outlet property="delegate" destination="Rq3-Aq-Koy" id="5Kb-OM-jVw"/>
                                 </connections>
@@ -268,6 +268,8 @@
                     <connections>
                         <outlet property="dataItemQuantity" destination="RDu-bZ-GeQ" id="Z99-Ld-NrI"/>
                         <outlet property="dataItemTitle" destination="aeh-iJ-mnk" id="3x7-Zo-VpE"/>
+                        <outlet property="descriptionLabel" destination="wk1-1e-gth" id="faD-QH-cFt"/>
+                        <outlet property="saveDataButton" destination="FHB-ZU-MGg" id="6Te-Un-3K2"/>
                         <segue destination="qsE-uy-yYX" kind="show" identifier="returnToDataList" id="aBS-Bd-D5H"/>
                     </connections>
                 </viewController>
@@ -294,6 +296,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="aBS-Bd-D5H"/>
+        <segue reference="1Cj-Nq-aHI"/>
     </inferredMetricsTieBreakers>
 </document>

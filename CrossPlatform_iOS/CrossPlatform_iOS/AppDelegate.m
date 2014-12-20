@@ -7,9 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "Reachability.h"
 #import <Parse/Parse.h>
 
 @interface AppDelegate ()
+
+@property (nonatomic) Reachability *internetReachability;
+@property (nonatomic) Reachability *wifiReachability;
 
 @end
 
@@ -32,7 +36,7 @@
                                                           NSForegroundColorAttributeName, nil]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
+    
 
     return YES;
 }
@@ -57,6 +61,24 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)isNetworkAvailable {
+    
+    BOOL isNetwork;
+    
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    
+    if (networkStatus == NotReachable) {
+        NSLog(@"There IS NO internet connection");
+        isNetwork = false;
+    } else {
+        NSLog(@"There IS internet connection");
+        isNetwork = true;
+    }
+    
+    return isNetwork;
 }
 
 

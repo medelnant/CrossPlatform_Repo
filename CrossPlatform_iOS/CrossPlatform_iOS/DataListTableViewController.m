@@ -7,6 +7,8 @@
 //
 
 #import "DataListTableViewController.h"
+#import "AddDataItemViewController.h"
+#import "AppDelegate.h"
 
 
 @implementation DataListTableViewController
@@ -25,6 +27,24 @@
     self.navigationItem.rightBarButtonItems = actionButtonItems;
     
 }
+-(void)loadObjects {
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    if(appDelegate.isNetworkAvailable) {
+        [super loadObjects];
+        [self setLoadingMessage:YES];
+    } else  {
+        [[self refreshControl]endRefreshing];
+        [self setLoadingMessage:NO];
+        [self clear];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network not available"
+                                                            message:@"Please try again later or check your network settings"
+                                                           delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        //Display Alert
+        [alertView show];
+    }
+}
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
@@ -33,8 +53,16 @@
     [self.navigationItem setHidesBackButton:YES animated:NO];
     [self.navigationItem setBackBarButtonItem:nil];
     
+    //Set timer to reload/query parse db for new objects
+    _reloadTimer = [NSTimer timerWithTimeInterval:20.0 target:self selector:@selector(reloadParseData:) userInfo:nil repeats:YES];
+    
+    NSRunLoop *loop = [NSRunLoop currentRunLoop];
+    [loop addTimer:_reloadTimer forMode:NSDefaultRunLoopMode];
+    
     
 }
+
+
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -51,6 +79,8 @@
 }
 
 - (PFQuery *)queryForTable {
+    NSLog(@"QueryForTable being called");
+        
     PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     
@@ -63,6 +93,7 @@
     [query orderByDescending:@"createdAt"];
     
     return query;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -99,13 +130,32 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    _selectedObject = [self objectAtIndexPath:indexPath];
+    
+    //Turn off the timer
+    [_reloadTimer invalidate];
+    _reloadTimer = nil;
+    
+    [self performSegueWithIdentifier:@"addDataItem" sender:nil];
+}
+
 - (void) addDataItem {
     //Send user to logged in application state
+    _selectedObject = nil;
+
+    //Turn off the timer
+    [_reloadTimer invalidate];
+    _reloadTimer = nil;
+
     [self performSegueWithIdentifier:@"addDataItem" sender:nil];
 }
 
 - (void) currentUserLogout {
     [PFUser logOut];
+    [_reloadTimer invalidate];
+    _reloadTimer = nil;
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -113,6 +163,66 @@
 {
     return UIStatusBarStyleLightContent;
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"addDataItem"]) {
+        AddDataItemViewController * destinationViewController = segue.destinationViewController;
+        
+        if(destinationViewController != nil) {
+            destinationViewController.dataItemObject = _selectedObject;
+        }
+    }
+}
+
+- (void)setLoadingMessage:(BOOL)showHide {
+    
+    //Code found on stackoverflow to override loading message since
+    UIActivityIndicatorViewStyle activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    
+    // go through all of the subviews until you find a PFLoadingView subclass
+    for (UIView *subview in self.view.subviews)
+    {
+        if ([subview class] == NSClassFromString(@"PFLoadingView"))
+        {
+            // find the loading label and loading activity indicator inside the PFLoadingView subviews
+            for (UIView *loadingViewSubview in subview.subviews) {
+                if ([loadingViewSubview isKindOfClass:[UILabel class]])
+                {
+                    UILabel *label = (UILabel *)loadingViewSubview;
+                    {
+                        if(showHide) {
+                            [label setHidden:NO];
+                        } else {
+                            [label setHidden:YES];
+                        }
+                        
+                    }
+                }
+                
+                if ([loadingViewSubview isKindOfClass:[UIActivityIndicatorView class]])
+                {
+                    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)loadingViewSubview;
+                    activityIndicatorView.activityIndicatorViewStyle = activityIndicatorViewStyle;
+                    
+                    if(showHide) {
+                        [activityIndicatorView setHidden:NO];
+                    } else {
+                        [activityIndicatorView setHidden:YES];
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+-(void)reloadParseData:(NSTimer *) timer {
+    
+    NSLog(@"reloadParseData Called");
+    [self loadObjects];
+    
+}
+
 @end
 
 

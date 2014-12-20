@@ -13,8 +13,15 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *dataItemTitle;
 @property (weak, nonatomic) IBOutlet UITextField *dataItemQuantity;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *saveDataButton;
 
 - (IBAction)saveDataItem:(id)sender;
+- (void)showNoNetworkMessage;
+
+
+//Define empty pfObject to receive/set from prepareFromSegue
+@property PFObject * dataItemObject;
 
 
 @end

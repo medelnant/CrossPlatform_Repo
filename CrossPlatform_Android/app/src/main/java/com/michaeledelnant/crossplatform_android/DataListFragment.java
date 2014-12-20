@@ -46,7 +46,6 @@ public class DataListFragment extends ListFragment {
     protected ArrayList<ParseObject> mDataSource;
     protected CustomDataListAdapter mListAdapter;
     protected Validation mCheckValidationLib;
-    protected Handler mHandler;
 
     public DataListFragment() {
     }
@@ -61,19 +60,17 @@ public class DataListFragment extends ListFragment {
         setHasOptionsMenu(true);
         setMenuVisibility(true);
 
-        int delay = 1000; // delay for 1 sec.
-        int period = 20000; // repeat every 10 sec.
+        int delay = 500;
+        int period = 20000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask()
         {
             public void run()
             {
-                Log.i(TAG, "Refresh interval called every 20 seconds with a 1 second delay in bewtween");
+                Log.i(TAG, "Refresh interval called every 20 seconds with a 1 second delay in between");
                 getDataItems();
             }
         }, delay, period);
-
-
 
     }
 

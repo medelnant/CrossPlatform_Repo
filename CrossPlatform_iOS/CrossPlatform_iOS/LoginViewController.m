@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "AppDelegate.h"
 
 @interface LoginViewController ()
 
@@ -36,6 +37,7 @@
 - (IBAction)forgotPassword:(id)sender {
     NSLog(@"Forgot Password Clicked!");
     
+    
     //Build Alert
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Forgot Password"
                                                         message:@"Please provide your email address to receive a reset link for your password"
@@ -52,49 +54,72 @@
 - (IBAction)clientLogin:(id)sender {
     NSLog(@"Login Clicked!");
     
-    //Capture text from textfields and store within NSString pointers
-    NSString * userNameText     = [self.username.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString * passwordText     = [self.password.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
-    NSLog(@"%@", [NSString stringWithFormat:@"Username: %@ | Password %@", userNameText, passwordText]);
-    
-    //Test if fields are empty
-    if([userNameText length] == 0 ||
-       [passwordText length] == 0) {
+    if(appDelegate.isNetworkAvailable) {
+        //Capture text from textfields and store within NSString pointers
+        NSString * userNameText     = [self.username.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString * passwordText     = [self.password.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        //Build alert
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login"
-                                                            message:@"Make sure you enter a username and password!"
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        //Display alert
-        [alertView show];
+        NSLog(@"%@", [NSString stringWithFormat:@"Username: %@ | Password %@", userNameText, passwordText]);
+        
+        //Test if fields are empty
+        if([userNameText length] == 0 ||
+           [passwordText length] == 0) {
+            
+            //Build alert
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login"
+                                                                message:@"Make sure you enter a username and password!"
+                                                               delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //Display alert
+            [alertView show];
+        } else {
+            
+            BOOL userNameOk = NO;
+            BOOL passwordOK = NO;
+            
+            if([userNameText length] > 3) {userNameOk=YES;};
+            if([passwordText length] > 3) {passwordOK=YES;};
+            
+            if(userNameOk && passwordOK) {
+                NSLog(@"We're ready to send to Parse");
+                NSLog(@"%@", [NSString stringWithFormat:@"Username: %@ | Password: %@", userNameText, passwordText]);
+                
+                
+                [PFUser logInWithUsernameInBackground:userNameText password:passwordText
+                                                block:^(PFUser *user, NSError *error) {
+                                                    if (user) {
+                                                        
+                                                        //Send user to logged in state of application
+                                                        [self performSegueWithIdentifier:@"loginSuccess" sender:nil];
+                                                        
+                                                        //Clear Values within fields
+                                                        self.username.text = @"";
+                                                        self.password.text = @"";
+                                                    } else {
+                                                        
+                                                        //Build Alert with error messaging
+                                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Logging In"
+                                                                                                            message:[[error userInfo] objectForKey:@"error"]
+                                                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                        //Display Alert
+                                                        [alertView show];
+                                                    }
+                                                }];
+                
+            } else {
+                //Build alert
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Login"
+                                                                    message:@"Username and Password both need to be longer than 3 characters"
+                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                //Display alert
+                [alertView show];
+            }
+        }
     } else {
-        
-        NSLog(@"We're read to send to Parse");
-        NSLog(@"%@", [NSString stringWithFormat:@"Username: %@ | Password: %@", userNameText, passwordText]);
-        
-        
-        [PFUser logInWithUsernameInBackground:userNameText password:passwordText
-                                        block:^(PFUser *user, NSError *error) {
-                                            if (user) {
-                                                
-                                                //Send user to logged in state of application
-                                                [self performSegueWithIdentifier:@"loginSuccess" sender:nil];
-                                                
-                                                //Clear Values within fields
-                                                self.username.text = @"";
-                                                self.password.text = @"";
-                                            } else {
-                                                
-                                                //Build Alert with error messaging
-                                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Logging In"
-                                                                                                    message:[[error userInfo] objectForKey:@"error"]
-                                                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                                //Display Alert
-                                                [alertView show];
-                                            }
-                                        }];
+        [self showNoNetworkMessage];
     }
+
     
     //Dismiss keyboard
     [[self username]resignFirstResponder];
@@ -118,27 +143,39 @@
     if(buttonIndex != 0) {
         if (alertView.tag == 99) {
             
-            //Retrive text from textfield and assign to pointer
-            NSString * emailAddress = [[alertView textFieldAtIndex: 0] text];
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
             
-            [PFUser requestPasswordResetForEmailInBackground:emailAddress block:^(BOOL succeeded, NSError *error) {
-                if (error) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
-                                                                        message:[error.userInfo objectForKey:@"error"]
-                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                } else {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password Reset Email Sent"
-                                                                        message:@"An email will arrive shortly that will allow for you to reset your password."
-                                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-            }];
-            
-            
+            if(appDelegate.isNetworkAvailable) {
+                //Retrive text from textfield and assign to pointer
+                NSString * emailAddress = [[alertView textFieldAtIndex: 0] text];
+                
+                [PFUser requestPasswordResetForEmailInBackground:emailAddress block:^(BOOL succeeded, NSError *error) {
+                    if (error) {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                            message:[error.userInfo objectForKey:@"error"]
+                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertView show];
+                    } else {
+                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password Reset Email Sent"
+                                                                            message:@"An email will arrive shortly that will allow for you to reset your password."
+                                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        [alertView show];
+                    }
+                }];
+            } else {
+                [self showNoNetworkMessage];
+            }
         }
     }
     
+}
+
+- (void)showNoNetworkMessage {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network not available"
+                                                        message:@"Please try again later or check your network settings"
+                                                       delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil];
+    //Display Alert
+    [alertView show];
 }
 
 //Dismiss keyboard when touches occur outside of keyboard

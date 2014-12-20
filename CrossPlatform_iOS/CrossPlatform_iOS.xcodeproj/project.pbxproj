@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		534AF19A1A45E6B80003FC1F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 534AF1991A45E6B80003FC1F /* Reachability.m */; };
 		53970C081A32AB12001E989E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C041A32AB12001E989E /* Bolts.framework */; };
 		53970C091A32AB12001E989E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C051A32AB12001E989E /* Parse.framework */; };
 		53970C0A1A32AB12001E989E /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53970C061A32AB12001E989E /* ParseFacebookUtils.framework */; };
@@ -44,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		534AF1981A45E6B80003FC1F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		534AF1991A45E6B80003FC1F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		53970C041A32AB12001E989E /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		53970C051A32AB12001E989E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		53970C061A32AB12001E989E /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
@@ -153,6 +156,8 @@
 		53D729381A240293004A9823 /* CrossPlatform_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				534AF1981A45E6B80003FC1F /* Reachability.h */,
+				534AF1991A45E6B80003FC1F /* Reachability.m */,
 				53970C0C1A32AB1B001E989E /* Frameworks */,
 				53D7293D1A240293004A9823 /* AppDelegate.h */,
 				53D7293E1A240293004A9823 /* AppDelegate.m */,
@@ -301,6 +306,7 @@
 				53970C261A32B688001E989E /* CreateAccountViewController.m in Sources */,
 				53970C361A3378C9001E989E /* AddDataItemViewController.m in Sources */,
 				53D729421A240293004A9823 /* LoginViewController.m in Sources */,
+				534AF19A1A45E6B80003FC1F /* Reachability.m in Sources */,
 				53970C2C1A334D0E001E989E /* DataListTableViewController.m in Sources */,
 				53D7293F1A240293004A9823 /* AppDelegate.m in Sources */,
 				53D7293C1A240293004A9823 /* main.m in Sources */,

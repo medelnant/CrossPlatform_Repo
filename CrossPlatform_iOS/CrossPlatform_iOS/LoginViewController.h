@@ -17,6 +17,6 @@
 - (IBAction)forgotPassword:(id)sender;
 - (IBAction)clientLogin:(id)sender;
 - (IBAction)createAccount:(id)sender;
-
+- (void)showNoNetworkMessage;
 @end
 

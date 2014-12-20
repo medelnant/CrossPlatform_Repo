@@ -18,6 +18,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *password;
 
 - (IBAction)createAccount:(id)sender;
-
+- (void)showNoNetworkMessage;
 
 @end
